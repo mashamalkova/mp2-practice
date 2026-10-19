@@ -25,7 +25,7 @@ TDynamicVector<T>& TDynamicVector<T>::operator=(const TDynamicVector& v) {
 	}
 	return *this;
 }
-// индексация
+// РёРЅРґРµРєСЃР°С†РёСЏ
 template<typename T>
 T& TDynamicVector<T>::operator[](size_t ind) {
 	return pMem[ind];
@@ -34,7 +34,7 @@ template<typename T>
 const T& TDynamicVector<T>::operator[](size_t ind) const {
 	return pMem[ind];
 }
-// индексация с контролем
+// РёРЅРґРµРєСЃР°С†РёСЏ СЃ РєРѕРЅС‚СЂРѕР»РµРј
 template<typename T>
 T& TDynamicVector<T>::at(size_t ind) {
 	if (ind >= sz) {
@@ -51,7 +51,7 @@ const T& TDynamicVector<T>::at(size_t ind) const {
 	return pMem[ind];
 }
 
-// сравнение
+// СЃСЂР°РІРЅРµРЅРёРµ
 template<typename T>
 bool TDynamicVector<T>::operator==(const TDynamicVector& v) const noexcept {
 	if (sz != v.sz) {
@@ -70,12 +70,12 @@ bool TDynamicVector<T>::operator!=(const TDynamicVector& v) const noexcept {
 	return !(*this == v);
 }
 
-// скалярные операции
+// СЃРєР°Р»СЏСЂРЅС‹Рµ РѕРїРµСЂР°С†РёРё
 template<typename T>
 TDynamicVector<T> TDynamicVector<T>::operator+(T val) {
 	TDynamicVector<T> res(sz);
 	for (size_t i = 0; i < sz; i++) {
-		res.pMem[i] += val;
+		res.pMem[i] = res.pMem[i] + val;
 	}
 	return res;
 }
@@ -84,7 +84,7 @@ template<typename T>
 TDynamicVector<T> TDynamicVector<T>::operator-(T val) {
 	TDynamicVector<T> res(sz);
 	for (size_t i = 0; i < sz; i++) {
-		res.pMem[i] -= val;
+		res.pMem[i] = res.pMem[i] - val;
 	}
 	return res;
 }
@@ -93,14 +93,14 @@ template<typename T>
 TDynamicVector<T> TDynamicVector<T>::operator*(T val) {
 	TDynamicVector<T> res(sz);
 	for (size_t i = 0; i < sz; i++) {
-		res.pMem[i] *= val;
+		res.pMem[i] = res.pMem[i] * val;
 	}
 	return res;
 }
 
-// векторные операции
+// РІРµРєС‚РѕСЂРЅС‹Рµ РѕРїРµСЂР°С†РёРё
 template<typename T>
-TDynamicVector<T> TDynamicVector<T>::operator+(const TDynamicVector& v) const{
+TDynamicVector<T> TDynamicVector<T>::operator+(const TDynamicVector& v) const {
 	if (sz != v.sz) {
 		throw invalid_argument("vector sizes are different");
 	}
@@ -112,7 +112,7 @@ TDynamicVector<T> TDynamicVector<T>::operator+(const TDynamicVector& v) const{
 }
 
 template<typename T>
-TDynamicVector<T> TDynamicVector<T>::operator-(const TDynamicVector& v) const{
+TDynamicVector<T> TDynamicVector<T>::operator-(const TDynamicVector& v) const {
 	if (sz != v.sz) {
 		throw invalid_argument("vector sizes are different");
 	}
@@ -140,9 +140,9 @@ template class TDynamicVector<double>;
 
 
 
-//матрица
+//РјР°С‚СЂРёС†Р°
 
-// сравнение
+// СЃСЂР°РІРЅРµРЅРёРµ
 template<typename T>
 bool TDynamicMatrix<T>::operator==(const TDynamicMatrix<T>& m) const noexcept {
 	if (sz != m.sz) return false;
@@ -153,7 +153,7 @@ bool TDynamicMatrix<T>::operator==(const TDynamicMatrix<T>& m) const noexcept {
 	return true;
 }
 
-// матрично-скалярные операции
+// РјР°С‚СЂРёС‡РЅРѕ-СЃРєР°Р»СЏСЂРЅС‹Рµ РѕРїРµСЂР°С†РёРё
 template<typename T>
 TDynamicMatrix<T> TDynamicMatrix<T>::operator*(const T& val) {
 	TDynamicMatrix<T> res(sz);
@@ -163,7 +163,7 @@ TDynamicMatrix<T> TDynamicMatrix<T>::operator*(const T& val) {
 	return res;
 }
 
-// матрично-векторные операции
+// РјР°С‚СЂРёС‡РЅРѕ-РІРµРєС‚РѕСЂРЅС‹Рµ РѕРїРµСЂР°С†РёРё
 template<typename T>
 TDynamicVector<T> TDynamicMatrix<T>::operator*(const TDynamicVector<T>& v) {
 	if (sz != v.size()) {
@@ -176,7 +176,7 @@ TDynamicVector<T> TDynamicMatrix<T>::operator*(const TDynamicVector<T>& v) {
 	return res;
 }
 
-// матрично-матричные операции
+// РјР°С‚СЂРёС‡РЅРѕ-РјР°С‚СЂРёС‡РЅС‹Рµ РѕРїРµСЂР°С†РёРё
 template<typename T>
 TDynamicMatrix<T> TDynamicMatrix<T>::operator+(const TDynamicMatrix<T>& m) {
 	if (sz != m.sz) {
@@ -217,7 +217,7 @@ TDynamicMatrix<T> TDynamicMatrix<T>::operator*(const TDynamicMatrix<T>& m) {
 	return res;
 }
 
-// ввод/вывод
+// РІРІРѕРґ/РІС‹РІРѕРґ
 template<typename T>
 istream& operator>>(istream& istr, TDynamicMatrix<T>& v) {
 	for (size_t i = 0; i < v.size; i++) {

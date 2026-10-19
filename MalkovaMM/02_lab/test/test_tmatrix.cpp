@@ -1,27 +1,27 @@
 #include "tmatrix.h"
 
-#include <gtest.h>
+#include <gtest/gtest.h>
 
 TEST(TDynamicMatrix, can_create_matrix_with_positive_length)
 {
-  ASSERT_NO_THROW(TDynamicMatrix<int> m(5));
+	ASSERT_NO_THROW(TDynamicMatrix<int> m(5));
 }
 
 TEST(TDynamicMatrix, cant_create_too_large_matrix)
 {
-  ASSERT_ANY_THROW(TDynamicMatrix<int> m(MAX_MATRIX_SIZE + 1));
+	ASSERT_ANY_THROW(TDynamicMatrix<int> m(MAX_MATRIX_SIZE + 1));
 }
 
 TEST(TDynamicMatrix, throws_when_create_matrix_with_negative_length)
 {
-  ASSERT_ANY_THROW(TDynamicMatrix<int> m(-5));
+	ASSERT_ANY_THROW(TDynamicMatrix<int> m(-5));
 }
 
 TEST(TDynamicMatrix, can_create_copied_matrix)
 {
-  TDynamicMatrix<int> m(5);
+	TDynamicMatrix<int> m(5);
 
-  ASSERT_NO_THROW(TDynamicMatrix<int> m1(m));
+	ASSERT_NO_THROW(TDynamicMatrix<int> m1(m));
 }
 
 TEST(TDynamicMatrix, copied_matrix_is_equal_to_source_one)
@@ -138,7 +138,7 @@ TEST(TDynamicMatrix, can_add_matrices_with_equal_size)
 	TDynamicMatrix<int> res = m1 + m2;
 	for (size_t i = 0; i < 2; i++) {
 		for (size_t j = 0; j < 2; j++) {
-			EXPECT_EQ(res[i][j],(i + j)*2);
+			EXPECT_EQ(res[i][j], (i + j) * 2);
 		}
 	}
 }
@@ -146,7 +146,7 @@ TEST(TDynamicMatrix, can_add_matrices_with_equal_size)
 TEST(TDynamicMatrix, cant_add_matrices_with_not_equal_size)
 {
 	TDynamicMatrix<int> m1(2), m2(3);
-	ASSERT_ANY_THROW(m1+m2);
+	ASSERT_ANY_THROW(m1 + m2);
 }
 
 TEST(TDynamicMatrix, can_subtract_matrices_with_equal_size)
