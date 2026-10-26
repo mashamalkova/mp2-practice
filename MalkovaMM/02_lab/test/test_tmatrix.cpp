@@ -38,7 +38,7 @@ TEST(TDynamicMatrix, copied_matrix_has_its_own_memory)
 	TDynamicMatrix<int> m(2);
 	m[0][0] = 10;
 	TDynamicMatrix<int> m1(m);
-	m[0][0] = 20;
+	m1[0][0] = 20;
 	EXPECT_NE(m[0][0], m1[0][0]);
 	EXPECT_EQ(m[0][0], 10);
 	EXPECT_EQ(m1[0][0], 20);

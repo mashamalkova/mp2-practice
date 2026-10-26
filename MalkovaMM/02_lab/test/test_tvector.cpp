@@ -37,7 +37,7 @@ TEST(TDynamicVector, copied_vector_has_its_own_memory)
 	TDynamicVector<int> v(5);
 	v[0] = 10;
 	TDynamicVector<int> v1(v);
-	v[0] = 20;
+	v1[0] = 20;
 	EXPECT_NE(v[0], v1[0]);
 	EXPECT_EQ(v[0], 10);
 	EXPECT_EQ(20, v1[0]);
