@@ -52,7 +52,11 @@ public:
     }
 
     TDynamicVector& operator=(const TDynamicVector& v) {
-        if (this != &v) {
+        if (this == &v) {
+            return *this;
+        }
+        if (this->sz != v.sz)
+        {
             delete[] pMem;
             sz = v.sz;
             pMem = new T[sz];
@@ -64,7 +68,7 @@ public:
     TDynamicVector& operator=(TDynamicVector&& v) noexcept 
     {
         if (this == &v) {
-            return*this;
+            return *this;
         }
         if (sz != v.sz) {
             sz = v.sz;
@@ -165,7 +169,7 @@ public:
         }
         T sum = T();
         for (size_t i = 0; i < sz; i++) {
-            sum = sum + (pMem[i] * v.pMem[i]);
+            sum += pMem[i] * v.pMem[i];
         }
         return sum;
     }
@@ -205,7 +209,7 @@ public:
         if(s > MAX_MATRIX_SIZE)
             throw length_error("Matrix size too large");
         for (size_t i = 0; i < sz; i++)
-            pMem[i] = TDynamicVector<T>(sz);
+            pMem[i] = TDynamicVector<T>(sz-i); 
     }
 
     using TDynamicVector<TDynamicVector<T>>::operator[];
@@ -237,7 +241,7 @@ public:
             throw invalid_argument("different sizes");
         }
         TDynamicVector<T> res(sz);
-        for (size_t i = 0; i < sz; i++) {
+        for (size_t i = 0; i < sz; i++) { //todo
             res[i] = pMem[i] * v;
         }
         return res;
@@ -270,7 +274,7 @@ public:
         }
         TDynamicMatrix<T> res(sz);
         for (size_t i = 0; i < sz; i++) {
-            for (size_t j = 0; j < sz; j++) {
+            for (size_t j = 0; j < sz; j++) { //todo
                 for (size_t k = 0; k < sz; k++) {
                     res[i][j] += pMem[i][k] * m.pMem[k][j];
                 }
@@ -286,7 +290,7 @@ public:
         }
         return istr;
     }
-    friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v) {
+    friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v) { // todo верхний треугольник
         for (size_t i = 0; i < v.sz; i++) {
             ostr << v[i] << "\n";
         }

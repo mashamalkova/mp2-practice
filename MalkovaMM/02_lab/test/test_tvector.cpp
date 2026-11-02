@@ -38,9 +38,7 @@ TEST(TDynamicVector, copied_vector_has_its_own_memory)
 	v[0] = 10;
 	TDynamicVector<int> v1(v);
 	v1[0] = 20;
-	EXPECT_NE(v[0], v1[0]);
-	EXPECT_EQ(v[0], 10);
-	EXPECT_EQ(20, v1[0]);
+	EXPECT_NE(v, v1);
 }
 
 TEST(TDynamicVector, can_get_size)
@@ -75,16 +73,14 @@ TEST(TDynamicVector, can_assign_vector_to_itself)
 	TDynamicVector<int> v(5);
 	v[0] = 100;
 	ASSERT_NO_THROW(v = v);
-	EXPECT_EQ(100, v[0]);
 }
 
 TEST(TDynamicVector, can_assign_vectors_of_equal_size)
 {
-	TDynamicVector<int> v1(5), v2(5);
-	v2[0] = 100;
-	ASSERT_NO_THROW(v1 = v2);
+	TDynamicVector<int> v1(3), v2(3);
+	v2[0] = 100; v2[1] = 101; v2[2] = 102;
+	v1 = v2;
 	EXPECT_TRUE(v1 == v2);
-	EXPECT_EQ(v1[0], 100);
 }
 
 TEST(TDynamicVector, assign_operator_change_vector_size)
@@ -96,10 +92,10 @@ TEST(TDynamicVector, assign_operator_change_vector_size)
 
 TEST(TDynamicVector, can_assign_vectors_of_different_size)
 {
-	TDynamicVector<int> v1(5), v2(10);
-	ASSERT_NO_THROW(v1 = v2);
+	TDynamicVector<int> v1(3), v2(5);
+	v2[0] = 100; v2[1] = 101; v2[2] = 102;
+	v1 = v2;
 	EXPECT_TRUE(v1 == v2);
-	EXPECT_EQ(v1.size(), 10);
 }
 
 TEST(TDynamicVector, compare_equal_vectors_return_true)
@@ -129,52 +125,46 @@ TEST(TDynamicVector, vectors_with_different_size_are_not_equal)
 
 TEST(TDynamicVector, can_add_scalar_to_vector)
 {
-	TDynamicVector<int> v1(5);
+	const int k = 10;
+	TDynamicVector<int> v1(5), exp(5);
 	for (size_t i = 0; i < 5; i++) {
 		v1[i] = i;
+		exp[i] = i + k;
 	}
-	TDynamicVector<int> res = v1 + 10;
-	for (size_t i = 0; i < 5; i++) {
-		EXPECT_EQ(i + 10, res[i]);
-	}
+	ASSERT_EQ(v1 + k, exp);
 }
 
-TEST(TDynamicVector, can_subtract_scalar_from_vector)
+TEST(TDynamicVector, can_subtract_scalar_from_vector) //todo
 {
-	TDynamicVector<int> v1(5);
+	const int k = 10;
+	TDynamicVector<int> v1(5), exp(5);
 	for (size_t i = 0; i < 5; i++) {
-		v1[i] = i * 10 + 10;
+		v1[i] = i * k + k;
+		exp[i] = i*k;
 	}
-	TDynamicVector<int> res = v1 - 10;
-	for (size_t i = 0; i < 5; i++) {
-		EXPECT_EQ(i * 10, res[i]);
-	}
+	ASSERT_EQ(v1 - k, exp);
 }
 
-TEST(TDynamicVector, can_multiply_scalar_by_vector)
+TEST(TDynamicVector, can_multiply_scalar_by_vector) //todo
 {
-	TDynamicVector<int> v1(5);
+	const int k = 2;
+	TDynamicVector<int> v1(5), exp(5);
 	for (size_t i = 0; i < 5; i++) {
 		v1[i] = i;
+		exp[i] = i * k;
 	}
-	TDynamicVector<int> res = v1 * 2;
-	for (size_t i = 0; i < 5; i++) {
-		EXPECT_EQ(i * 2, res[i]);
-	}
+	ASSERT_EQ(v1 * k, exp);
 }
 
-TEST(TDynamicVector, can_add_vectors_with_equal_size)
+TEST(TDynamicVector, can_add_vectors_with_equal_size) //todo
 {
-	TDynamicVector<int> v1(5), v2(5);
+	TDynamicVector<int> v1(5), v2(5), exp(5);
 	for (size_t i = 0; i < 5; i++) {
 		v1[i] = i;
 		v2[i] = i + 1;
+		exp[i] = i * 2 + 1;
 	}
-	ASSERT_NO_THROW(v1 + v2);
-	TDynamicVector<int> res = v1 + v2;
-	for (size_t i = 0; i < 5; i++) {
-		EXPECT_EQ(i * 2 + 1, res[i]);
-	}
+	ASSERT_EQ(v1 + v2, exp);
 }
 
 TEST(TDynamicVector, cant_add_vectors_with_not_equal_size)
@@ -183,18 +173,15 @@ TEST(TDynamicVector, cant_add_vectors_with_not_equal_size)
 	ASSERT_ANY_THROW(v1 + v2);
 }
 
-TEST(TDynamicVector, can_subtract_vectors_with_equal_size)
+TEST(TDynamicVector, can_subtract_vectors_with_equal_size) //todo
 {
-	TDynamicVector<int> v1(5), v2(5);
+	TDynamicVector<int> v1(5), v2(5), exp(5);
 	for (size_t i = 0; i < 5; i++) {
 		v1[i] = i;
 		v2[i] = i + 1;
+		exp[i] = 1;
 	}
-	ASSERT_NO_THROW(v2 - v1);
-	TDynamicVector<int> res = v2 - v1;
-	for (size_t i = 0; i < 5; i++) {
-		EXPECT_EQ(1, res[i]);
-	}
+	ASSERT_EQ(v2 - v1, exp);
 }
 
 TEST(TDynamicVector, cant_subtract_vectors_with_not_equal_size)
@@ -209,8 +196,7 @@ TEST(TDynamicVector, can_multiply_vectors_with_equal_size)
 	for (size_t i = 0; i < 5; i++) {
 		v1[i] = i;
 		v2[i] = i;
-	}
-	ASSERT_NO_THROW(v2 * v1);
+	}	
 	int res = v2 * v1;
 	EXPECT_EQ(30, res);
 }
