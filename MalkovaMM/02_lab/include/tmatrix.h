@@ -242,7 +242,11 @@ public:
         }
         TDynamicVector<T> res(sz);
         for (size_t i = 0; i < sz; i++) { //todo
-            res[i] = pMem[i] * v;
+            T sum = 0;
+            for (size_t k = 0; k < pMem[i].size(); k++) {
+                sum += pMem[i][k] * v[i + k];
+            }
+            res[i] = sum;
         }
         return res;
     }
@@ -274,10 +278,12 @@ public:
         }
         TDynamicMatrix<T> res(sz);
         for (size_t i = 0; i < sz; i++) {
-            for (size_t j = 0; j < sz; j++) { //todo
-                for (size_t k = 0; k < sz; k++) {
-                    res[i][j] += pMem[i][k] * m.pMem[k][j];
+            for (size_t j = i; j < sz; j++) { 
+                T sum = 0;
+                for (size_t k = i; k <= j; k++) {
+                    sum += pMem[i][k-i] * m.pMem[k][j-k];
                 }
+                res[i][j - i] = sum;
             }
         }
         return res;
@@ -292,6 +298,9 @@ public:
     }
     friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v) { // todo верхний треугольник
         for (size_t i = 0; i < v.sz; i++) {
+            for (size_t j = 0; j < i; j++) {
+                ostr << "0 ";
+            }
             ostr << v[i] << "\n";
         }
         return ostr;
