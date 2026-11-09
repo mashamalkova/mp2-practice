@@ -241,7 +241,7 @@ public:
             throw invalid_argument("different sizes");
         }
         TDynamicVector<T> res(sz);
-        for (size_t i = 0; i < sz; i++) { //todo
+        for (size_t i = 0; i < sz; i++) {
             T sum = 0;
             for (size_t k = 0; k < pMem[i].size(); k++) {
                 sum += pMem[i][k] * v[i + k];
@@ -296,7 +296,7 @@ public:
         }
         return istr;
     }
-    friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v) { // todo верхний треугольник
+    friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v) {
         for (size_t i = 0; i < v.sz; i++) {
             for (size_t j = 0; j < i; j++) {
                 ostr << "0 ";
