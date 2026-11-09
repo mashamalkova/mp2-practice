@@ -25,19 +25,15 @@ TEST(TStack, copied_stack_is_equal_to_source_one)
 	TStack<int> s(5);
 	for (size_t i = 0; i < 5; i++) s.push(i);
 	TStack<int> s1(s);
-	for (int i = 0; i < 5; i++) {
-		ASSERT_TRUE(s.top() == s1.top());
-		s.pop();
-		s1.pop();
-	}
+	ASSERT_TRUE(s == s1);
 }
 TEST(TStack, copied_stack_has_its_own_memory)
 {
 	TStack<int> s(5);
 	s.push(10);
 	TStack<int> s1(s);
-	s1.push(20);
-	EXPECT_NE(s.top(), s1.top());
+	s1.pop();
+	ASSERT_TRUE(s != s1);
 }
 
 TEST(TStack, can_assign_stack_to_itself)

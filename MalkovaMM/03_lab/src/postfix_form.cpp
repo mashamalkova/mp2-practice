@@ -2,18 +2,18 @@
 #include <iostream>
 #include <vector>
 
-bool ArithmeticExpression::isOperation(char c) {
+bool ArithmeticExpression::isOperation(char c) const {
 	return OPERATIONS.find(c) != string::npos;
 }
 
-int ArithmeticExpression::getPriority(char c) {
+int ArithmeticExpression::getPriority(char c) const {
 	if (c == '(') return 1;
 	if (c == '-' || c == '+') return 2;
 	if (c == '*' || c == '/') return 3;
 	return 0;
 }
 
-string ArithmeticExpression::GetPostfix() {
+string ArithmeticExpression::GetPostfix() const {
 	TStack<char> operands(STACK_SIZE);
 	TStack<char> operations(STACK_SIZE);
 	string result = "";
@@ -88,9 +88,9 @@ double ArithmeticExpression::Compute(const vector <pair<char, double>>& vars) {
 			val_operands.push(res);
 		}
 	}
-	return val_operands.top();
+	return val_operands.top(); // incorrect expression val_operands содержит больше 1 элемента
 }
-vector<char> ArithmeticExpression::GetUnique() {
+vector<char> ArithmeticExpression::GetUnique() const {
 	vector<char> uniqVars;
 	for (char c : expression) {
 		if (c == ' ' || isOperation(c)) continue;
@@ -108,7 +108,7 @@ vector<char> ArithmeticExpression::GetUnique() {
 	return uniqVars;
 }
 
-vector <pair<char, double>> ArithmeticExpression::MakeVectorPair() {
+vector <pair<char, double>> ArithmeticExpression::MakeVectorPair() const {
 	vector <pair<char, double>> result;
 	vector<char> uniqVars = GetUnique();
 	if (uniqVars.empty()) {

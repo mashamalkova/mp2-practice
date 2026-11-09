@@ -44,3 +44,10 @@ TEST(PostfixForm, cant_divide_by_zero) {
     vector <pair<char, double>> vars = { {'A', 5.0}, {'B', 0.0} };
     EXPECT_THROW(ae.Compute(vars), std::exception);
 }
+
+// todo: errors
+// A++B
+// -A
+// A+++B
+// ((A+B)
+// ...

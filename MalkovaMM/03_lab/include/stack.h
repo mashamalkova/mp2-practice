@@ -70,7 +70,7 @@ public:
 		}
 		return *this;
 	}
-	TStack<T>& operator = (const TStack<T>&&) {
+	TStack<T>& operator = (const TStack<T>&& s) {
 		delete st[];
 		st = s.st;
 		s.st = nullptr;
@@ -79,5 +79,20 @@ public:
 		top_idx = s.top_idx;
 		s.top_idx = -1;
 		return *this;
+	}
+	bool operator ==(const TStack<T>& s) const{
+		if (this == &s)
+			return true;
+		if (size != s.size) {
+			return false;
+		}
+		for (SSIZE_T i = 0; i <= top_idx; i++) {
+			if (st[i] != s.st[i])
+				return false;
+		}
+		return true;
+	}
+	bool operator != (const TStack<T>& s) const{
+		return !(*this == s);
 	}
 };
