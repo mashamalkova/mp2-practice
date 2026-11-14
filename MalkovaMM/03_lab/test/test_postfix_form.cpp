@@ -44,10 +44,38 @@ TEST(PostfixForm, cant_divide_by_zero) {
     vector <pair<char, double>> vars = { {'A', 5.0}, {'B', 0.0} };
     EXPECT_THROW(ae.Compute(vars), std::exception);
 }
+TEST(PostfixForm, cant_double_operators) {
+    EXPECT_THROW(ArithmeticExpression ae("A++B"), std::exception);
+    EXPECT_THROW(ArithmeticExpression ae("A+++B"), std::exception);
+    EXPECT_THROW(ArithmeticExpression ae("A*-B"), std::exception);
+}
 
-// todo: errors
-// A++B
-// -A
-// A+++B
-// ((A+B)
-// ...
+TEST(PostfixForm, cant_starts_with_operator) {
+    EXPECT_THROW(ArithmeticExpression ae("*A"), std::exception);
+}
+
+TEST(PostfixForm, cant_ends_with_operator) {
+    EXPECT_THROW(ArithmeticExpression ae("A+"), std::exception);
+}
+
+TEST(PostfixForm, cant_empty_expression) {
+    EXPECT_THROW(ArithmeticExpression ae(""), std::exception);
+}
+
+TEST(PostfixForm, cant_invalid_parentheses) {
+    EXPECT_THROW(ArithmeticExpression ae("((A+B)"), std::exception);
+    EXPECT_THROW(ArithmeticExpression ae("A+B)"), std::exception);
+    EXPECT_THROW(ArithmeticExpression ae(")A+B("), std::exception);
+    EXPECT_THROW(ArithmeticExpression ae("A+()"), std::exception);
+}
+
+TEST(PostfixForm, can_starts_with_unary_minus) {
+    EXPECT_NO_THROW(ArithmeticExpression ae("-A"));
+    EXPECT_NO_THROW(ArithmeticExpression ae("-A+B*C"));
+}
+
+TEST(PostfixForm, compute_fails_on_too_many_operands) {
+    ArithmeticExpression ae("AB");
+    vector <pair<char, double>> vars = { {'A', 1.0}, {'B', 2.0} };
+    EXPECT_THROW(ae.Compute(vars), std::exception);
+}

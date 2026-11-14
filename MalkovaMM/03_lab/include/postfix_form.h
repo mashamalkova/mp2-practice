@@ -12,13 +12,13 @@ class ArithmeticExpression{
 	const string OPERATIONS = "+-*/()";
 	bool isOperation(char) const;
 	int getPriority(char) const;
-	bool validatExp(string) const;
+	bool isValidExp(string) const;
 
 public:
 	ArithmeticExpression(const string& exp): expression(exp){
-		if (!validatExp(exp))
+		if (!isValidExp(exp))
 			throw std::exception("incorrect expression");
-	} // todo проверка корректности (скобки, последовательные несколько операций)
+	}
 	string GetPostfix() const;
 	double Compute(const vector <pair<char, double>>&);
 	vector<char> GetUnique() const;

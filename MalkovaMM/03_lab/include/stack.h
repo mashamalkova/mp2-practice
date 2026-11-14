@@ -83,7 +83,7 @@ public:
 	bool operator ==(const TStack<T>& s) const{
 		if (this == &s)
 			return true;
-		if (size != s.size) {
+		if (top_idx != s.top_idx) {
 			return false;
 		}
 		for (SSIZE_T i = 0; i <= top_idx; i++) {

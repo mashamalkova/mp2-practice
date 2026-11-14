@@ -13,6 +13,33 @@ int ArithmeticExpression::getPriority(char c) const {
 	return 0;
 }
 
+bool ArithmeticExpression::isValidExp(string exp) const {
+	if (exp.empty())
+		return false;
+	if (isOperation(exp[0]) && exp[0] != '-' && exp[0] != '(')
+		return false;
+	char last = exp.back();
+	if (isOperation(last) && last != ')')
+		return false;
+	char prev = ' ';
+	int ck = 0;
+	for (char c : exp) {
+		if (c == '(')
+			ck++;
+		if (c == ')')
+			ck--;
+		if (ck < 0)
+			return false;
+		if (prev =='(' && c == ')')
+			return false;
+		if (isOperation(prev) && isOperation(c) && prev != '(' && prev != ')' && c != '(' && c != ')') {
+			return false;
+		}
+		prev = c;
+	}
+	return ck == 0;
+}
+
 string ArithmeticExpression::GetPostfix() const {
 	TStack<char> operands(STACK_SIZE);
 	TStack<char> operations(STACK_SIZE);
@@ -72,8 +99,11 @@ double ArithmeticExpression::Compute(const vector <pair<char, double>>& vars) {
 		else {
 			double op2 = val_operands.top();
 			val_operands.pop();
-			double op1 = val_operands.top();
-			val_operands.pop();
+			double op1 = 0.0;
+			if (!val_operands.isEmpty()) {
+				op1 = val_operands.top();
+				val_operands.pop();
+			}
 			double res = 0.0;
 			switch (c) {
 			case('+'): res = op1 + op2; break;
@@ -88,7 +118,11 @@ double ArithmeticExpression::Compute(const vector <pair<char, double>>& vars) {
 			val_operands.push(res);
 		}
 	}
-	return val_operands.top(); // incorrect expression val_operands содержит больше 1 элемента
+	double result = val_operands.top();
+	val_operands.pop();
+	if (!val_operands.isEmpty())
+		throw std::runtime_error("incorrect expression");
+	return result; 
 }
 vector<char> ArithmeticExpression::GetUnique() const {
 	vector<char> uniqVars;
